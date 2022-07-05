@@ -1,5 +1,7 @@
 #include "InfoOut.h"
 #include<iostream>
+#include<string>
+
 
 int cmpstr(char* arr,int len, const char* a) {
 	int ln_cnstch = 0;
@@ -35,25 +37,33 @@ InfoOut::~InfoOut() {
 }
 
 int InfoOut::fells_like() {
-	
-
+	int indf = cmpstr(jsonarray, lenght, "fells_like");
+	indf += 2;
+	int i, j;
+	i = j = 0;
+	while (jsonarray[indf + i] != ',') {
+		tmp[i] = jsonarray[indf + i];
+	}
+	float fl_lk = atof(tmp);
+	std::cout << "\n" << fl_lk;
+	return (int)fl_lk;
 }
 
-char* InfoOut::mainweather() {
-
-}
-int InfoOut::pressure() {
-
-}
-int InfoOut::tempmax() {
-
-}
-int InfoOut::tempmin() {
-
-}
-int InfoOut::tempnow() {
-
-}
-int InfoOut::wind() {
-
-}
+//char* InfoOut::mainweather() {
+//
+//}
+//int InfoOut::pressure() {
+//
+//}
+//int InfoOut::tempmax() {
+//
+//}
+//int InfoOut::tempmin() {
+//
+//}
+//int InfoOut::tempnow() {
+//
+//}
+//int InfoOut::wind() {
+//
+//}

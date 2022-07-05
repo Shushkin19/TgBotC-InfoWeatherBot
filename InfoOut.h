@@ -6,7 +6,7 @@ class InfoOut
 	char tmp[15];
 
 public:
-	InfoOut(char* arr,int len);
+	InfoOut(std::string arr,int len);
 	~InfoOut();
 	int tempnow();
 	int tempmin();

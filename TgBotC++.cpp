@@ -32,6 +32,8 @@ int main() {
         std::cout << readBuffer;
 
     }
+ 
+    InfoOut io(readBuffer, readBuffer.length());
 
 
 

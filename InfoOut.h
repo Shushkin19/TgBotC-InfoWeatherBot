@@ -1,17 +1,19 @@
 #pragma once
+#include<string>
+#define MAX 15
 class InfoOut
 {
 	char* jsonarray;
 	int lenght;
-	char tmp[15];
+	char tmp[MAX];
 
 public:
 	InfoOut(std::string arr,int len);
 	~InfoOut();
-	int tempnow();
-	int tempmin();
-	int tempmax();
-	int fells_like();
+	float tempnow();
+	float tempmin();
+	float tempmax();
+	float fells_like();
 	char* mainweather();
 	int pressure();
 	int wind();
@@ -20,3 +22,4 @@ public:
 
 
  int cmpstr(char* arr,int len, const char* a);
+ void clear(char* arr);

@@ -32,9 +32,17 @@ int main() {
         std::cout << readBuffer;
 
     }
- 
-    InfoOut io(readBuffer, readBuffer.length());
+    //char NoSTDStringArray[1024] = { 0 };
+    //for (int i = 0; i < readBuffer.length(); i++) {
+    //    NoSTDStringArray[i] = readBuffer[i];
+    //}
+    //int len = readBuffer.length();
+    InfoOut io(readBuffer,readBuffer.length());
+  
 
+   std::cout << "\n\n\n" <<io.fells_like();
+   std::cout << "\n\n\n" << io.pressure();
+   std::cout << "\n\n\n" << io.tempmin();
 
 
      /* TgBot::Bot bot("5556000193:AAEnA30U_a6E5vbZ8Fh0se2VsDSRp8fTVL4");

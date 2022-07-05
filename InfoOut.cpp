@@ -2,11 +2,14 @@
 #include<iostream>
 #include<string>
 #define MAX 15
+
+
 void clear(char* arr) {
 	for (int i = 0; i < MAX; i++) {
 		arr[i] = 0;
 	}
 }
+
 int cmpstr(char* arr,int len, const char* a) {
 	int ln_cnstch = 0;
 			int j = 0;
@@ -31,8 +34,6 @@ int cmpstr(char* arr,int len, const char* a) {
 	}
 }
 
-
-
 InfoOut::InfoOut(std::string arr, int len) {
 	jsonarray = new char[len];
 	for (int i = 0; i < len; i++) {
@@ -46,7 +47,7 @@ InfoOut::~InfoOut() {
 	delete[] jsonarray;
 }
 
-float InfoOut::fells_like() {
+double InfoOut::fells_like() {
 	clear(tmp);
 	int indf = cmpstr(jsonarray, lenght, "feels_like");
 	int ln = strlen("feels_like");
@@ -61,13 +62,10 @@ float InfoOut::fells_like() {
 		std::cout << tmp[y];
 	}*/
 	float fl_lk = atof(tmp);
+	fl_lk -= 273;
 	//std::cout << "\n" << fl_lk;
 	return fl_lk;
 }
-
-//char* InfoOut::mainweather() {
-//
-//}
 
 int InfoOut::pressure() {
 	clear(tmp);
@@ -129,7 +127,26 @@ return fl_lk;
 //float InfoOut::tempnow() {
 //
 //}
-
+// 
 //int InfoOut::wind() {
 //
 //}
+// 
+char* InfoOut::mainweather() {
+	clear(tmp);
+	int indf = cmpstr(jsonarray, lenght, "main");
+	int ln = strlen("main");
+	indf += 2;
+	int i, j;
+	i = j = 0;
+	while (jsonarray[indf + i + ln] != ',') {
+		tmp[i] = jsonarray[indf + ln + i];
+		i++;
+	}
+	/*for (int y = 0; y < i; y++) {
+		std::cout << tmp[y];
+	}*/
+	
+	//std::cout << "\n" << fl_lk;
+	return tmp;
+}

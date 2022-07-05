@@ -1,12 +1,12 @@
 ﻿
 
-//#include <tgbot/tgbot.h>
+#include <tgbot/tgbot.h>
 #include<curl/curl.h>
 #include<json/json.h>
 #include<iostream>
 #include"InfoOut.h"
 
-//using namespace TgBot;
+using namespace TgBot;
 
 
 
@@ -32,20 +32,16 @@ int main() {
         std::cout << readBuffer;
 
     }
-    //char NoSTDStringArray[1024] = { 0 };
-    //for (int i = 0; i < readBuffer.length(); i++) {
-    //    NoSTDStringArray[i] = readBuffer[i];
-    //}
-    //int len = readBuffer.length();
+ 
     InfoOut io(readBuffer,readBuffer.length());
   
 
-   std::cout << "\n\n\n" <<io.fells_like();
+ /*  std::cout << "\n\n\n" <<io.fells_like();
    std::cout << "\n\n\n" << io.pressure();
-   std::cout << "\n\n\n" << io.tempmin();
+   std::cout << "\n\n\n" << io.tempmin();*/
 
 
-     /* TgBot::Bot bot("5556000193:AAEnA30U_a6E5vbZ8Fh0se2VsDSRp8fTVL4");
+      TgBot::Bot bot("5556000193:AAEnA30U_a6E5vbZ8Fh0se2VsDSRp8fTVL4");
 
     
   
@@ -54,16 +50,28 @@ int main() {
         bot.getApi().sendMessage(message->chat->id, "Hello, " + message->chat->firstName + ".\nIt's weather ShushaBot!\n");
         });
     
-   
+    int m = 9;
 
-    bot.getEvents().onAnyMessage([&bot](TgBot::Message::Ptr message) {
-        printf("User wrote %s\n", message->text.c_str());
-        if (StringTools::startsWith(message->text, "/start")) {
-            return;
-        }
-        bot.getApi().sendMessage(message->chat->id, "Your message is: " + message->text);
+    //bot.getEvents().onAnyMessage([&bot, &io](TgBot::Message::Ptr message) {
+    //    printf("User wrote %s\n", message->text.c_str());
+    //    if (StringTools::startsWith(message->text, "/start")) {
+    //        return;
+    //    }
+    //    else if (StringTools::startsWith(message->text, "/weather")) {
+    //        bot.getEvents().onCommand("weather", [&bot, &io](TgBot::Message::Ptr message) {
+    //            bot.getApi().sendMessage(message->chat->id, "Temp feels like: " + io.pressure()); // доделать функцию лямбды
+    //            });
+    //    }
+    //    bot.getApi().sendMessage(message->chat->id, "Your message is: " + message->text);
+    //    });
+    
+    bot.getEvents().onCommand("pressure", [&bot, &io](TgBot::Message::Ptr message) {
+        bot.getApi().sendMessage(message->chat->id, "the pressure is: " + std::to_string(io.pressure())); // доделать функцию лямбды
+        }); 
+
+    bot.getEvents().onCommand("temp", [&bot, &io](TgBot::Message::Ptr message) {
+        bot.getApi().sendMessage(message->chat->id, "the fells like temp is: " + std::to_string(io.fells_like())); // доделать функцию лямбды
         });
-
 
     try {
         printf("Bot username: %s\n", bot.getApi().getMe()->username.c_str());
@@ -75,7 +83,7 @@ int main() {
     }
     catch (TgBot::TgException& e) {
         printf("error: %s\n", e.what());
-    }*/
+    }
     
     return 0;
 }

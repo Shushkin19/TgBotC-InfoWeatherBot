@@ -13,7 +13,7 @@ public:
 	float tempnow();
 	float tempmin();
 	float tempmax();
-	float fells_like();
+	double fells_like();
 	char* mainweather();
 	int pressure();
 	int wind();

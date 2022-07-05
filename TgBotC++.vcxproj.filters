@@ -18,12 +18,18 @@
     <ClCompile Include="TgBotC++.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="InfoOut.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="README.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoOut.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

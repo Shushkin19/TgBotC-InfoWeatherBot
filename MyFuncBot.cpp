@@ -18,6 +18,6 @@ void WeatherBuff(std::string& readBuffer, CURL*& curl) {
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         CURLcode res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
-        std::cout << readBuffer;
+       // std::cout << readBuffer;
     }
 }

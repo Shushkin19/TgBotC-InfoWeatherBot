@@ -21,15 +21,18 @@
     <ClCompile Include="InfoOut.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="MyFuncBot.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="README.h">
+    <ClInclude Include="InfoOut.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="InfoOut.h">
+    <ClInclude Include="MyFuncBot.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

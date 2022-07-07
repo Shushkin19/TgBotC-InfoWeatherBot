@@ -5,80 +5,53 @@
 #include<json/json.h>
 #include<iostream>
 #include"InfoOut.h"
+#include<thread>
+#include<chrono>
+#include"MyFuncBot.h"
+
 
 using namespace TgBot;
 
 
 
- size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
-{
-    ((std::string*)userp)->append((char*)contents, size * nmemb);
-    return size * nmemb;
-}
-
 int main() {
-    CURL* curl = curl_easy_init();
+    setlocale(LC_ALL, "ru");
+    CURL* curl;
     std::string readBuffer;
-        readBuffer.clear();
-
-    if (curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, "https://api.openweathermap.org/data/2.5/weather?q=Kolpino&appid=8fb3a19a8ce1766a1340546d7de4973e");
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-       CURLcode res = curl_easy_perform(curl);
-        curl_easy_cleanup(curl);
-        std::cout << "\n\n\n";
-
-        std::cout << readBuffer;
-
-    }
+    InfoOut io;
  
-    InfoOut io(readBuffer,readBuffer.length());
-  
-
- /*  std::cout << "\n\n\n" <<io.fells_like();
-   std::cout << "\n\n\n" << io.pressure();
-   std::cout << "\n\n\n" << io.tempmin();*/
-
-
       TgBot::Bot bot("5556000193:AAEnA30U_a6E5vbZ8Fh0se2VsDSRp8fTVL4");
-
-    
+     
+      bot.getEvents().onCommand("start", [&bot, &io, &curl, &readBuffer](TgBot::Message::Ptr message) {
+          int bg = time(NULL);
+          int sec = 10;
+          int end = bg + sec;
+          while (1) {
+              bg = time(NULL);
+              if (bg == end) {
+                  end += sec;
+                 WeatherBuff(readBuffer, curl);
+                  InfoOut io(readBuffer, readBuffer.length());
+                  bot.getApi().sendMessage(message->chat->id,
+                      "Weather: " + io.mainweather() + "\nTempNow: " + std::to_string(io.tempnow()) +
+                      "\nfeels_like: " + std::to_string(io.fells_like()) + "\nWind: " + std::to_string(io.wind()) +
+                      "\nTempMax: " + std::to_string(io.tempmax()) + "\nPressure: " + std::to_string(io.pressure())); 
+              }
+          }
+          });
+   //Когда наступает определенное время флаг становится 1 и выполняется код, меняя флаг на ноль
+   
+   
   
-
-    bot.getEvents().onCommand("start", [&bot](TgBot::Message::Ptr message) {
-        bot.getApi().sendMessage(message->chat->id, "Hello, " + message->chat->firstName + ".\nIt's weather ShushaBot!\n");
-        });
     
-    int m = 9;
-
-    //bot.getEvents().onAnyMessage([&bot, &io](TgBot::Message::Ptr message) {
-    //    printf("User wrote %s\n", message->text.c_str());
-    //    if (StringTools::startsWith(message->text, "/start")) {
-    //        return;
-    //    }
-    //    else if (StringTools::startsWith(message->text, "/weather")) {
-    //        bot.getEvents().onCommand("weather", [&bot, &io](TgBot::Message::Ptr message) {
-    //            bot.getApi().sendMessage(message->chat->id, "Temp feels like: " + io.pressure()); // доделать функцию лямбды
-    //            });
-    //    }
-    //    bot.getApi().sendMessage(message->chat->id, "Your message is: " + message->text);
-    //    });
-    
-    bot.getEvents().onCommand("pressure", [&bot, &io](TgBot::Message::Ptr message) {
-        bot.getApi().sendMessage(message->chat->id, "the pressure is: " + std::to_string(io.pressure())); // доделать функцию лямбды
-        }); 
-
-    bot.getEvents().onCommand("temp", [&bot, &io](TgBot::Message::Ptr message) {
-        bot.getApi().sendMessage(message->chat->id, "the fells like temp is: " + std::to_string(io.fells_like())); // доделать функцию лямбды
-        });
-
+     
     try {
         printf("Bot username: %s\n", bot.getApi().getMe()->username.c_str());
         TgBot::TgLongPoll longPoll(bot);
         while (true) {
             printf("Long poll started\n");
             longPoll.start();
+            
         }
     }
     catch (TgBot::TgException& e) {

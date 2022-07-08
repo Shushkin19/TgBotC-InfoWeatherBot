@@ -23,7 +23,7 @@ int main() {
     //std::time_t t = std::time(0);
     //std::tm* now = localtime(&t);
        
-      TgBot::Bot bot("5556000193:AAEnA30U_a6E5vbZ8Fh0se2VsDSRp8fTVL4");
+      TgBot::Bot bot("token");
      
       bot.getApi().deleteWebhook();
 
@@ -65,11 +65,25 @@ int main() {
                       "\nTempMax: " + std::to_string(io.tempmax()) + "\nPressure: " + std::to_string(io.pressure()));
                   std::this_thread::sleep_for(std::chrono::minutes(1));
               }
+
               else if (now->tm_hour == 7 && now->tm_min == 00 && now->tm_sec == 39) {//Утренний прогноз
-
+                  WeatherFutureTodayBuff(readBuffer, curl);
+                  InfoOut io(readBuffer, readBuffer.length());
+                  bot.getApi().sendMessage(message->chat->id,
+                      "Weather: " + io.mainweather() + "\nTempNow: " + std::to_string(io.tempnow()) +
+                      "\nfeels_like: " + std::to_string(io.fells_like()) + "\nWind: " + std::to_string(io.wind()) +
+                      "\nTempMax: " + std::to_string(io.tempmax()) + "\nPressure: " + std::to_string(io.pressure()));
+                  std::this_thread::sleep_for(std::chrono::minutes(1));
               }
-              else if (now->tm_hour == 22 && now->tm_min == 00 && now->tm_sec == 39) {//Прогноз на завтра
 
+              else if (now->tm_hour == 22 && now->tm_min == 00 && now->tm_sec == 39) {//Прогноз на завтра
+                  WeatherFutureTomorrowBuff(readBuffer, curl);
+                  InfoOut io(readBuffer, readBuffer.length());
+                  bot.getApi().sendMessage(message->chat->id,
+                      "Weather: " + io.mainweather() + "\nTempNow: " + std::to_string(io.tempnow()) +
+                      "\nfeels_like: " + std::to_string(io.fells_like()) + "\nWind: " + std::to_string(io.wind()) +
+                      "\nTempMax: " + std::to_string(io.tempmax()) + "\nPressure: " + std::to_string(io.pressure()));
+                  std::this_thread::sleep_for(std::chrono::minutes(1));
               }
           }
           });
@@ -92,17 +106,5 @@ int main() {
         printf("error: %s\n", e.what());
     }
 
-    /*try {
-        printf("Bot username: %s\n", bot.getApi().getMe()->username.c_str());
-
-        TgWebhookTcpServer webhookServer(8080, bot);
-
-        printf("Server starting\n");
-        bot.getApi().setWebhook(webhookUrl);
-        webhookServer.start();
-    }
-    catch (TgBot::TgException& e) {
-        printf("error: %s\n", e.what());
-    }*/
     return 0;
 }

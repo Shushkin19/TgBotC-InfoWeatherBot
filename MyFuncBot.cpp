@@ -13,7 +13,7 @@ void WeatherBuff(std::string& readBuffer, CURL*& curl) {
     curl = curl_easy_init();
     if (curl) {
         readBuffer.clear();
-        curl_easy_setopt(curl, CURLOPT_URL, "https://api.openweathermap.org/data/2.5/weather?q=Kolpino&appid=8fb3a19a8ce1766a1340546d7de4973e");
+        curl_easy_setopt(curl, CURLOPT_URL, "url");
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         CURLcode res = curl_easy_perform(curl);

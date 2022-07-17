@@ -2,88 +2,85 @@
 
 #include <tgbot/tgbot.h>
 #include<curl/curl.h>
-#include<json/json.h>
+#include<nlohmann/json.hpp>
 #include<iostream>
 #include"InfoOut.h"
 #include<thread>
 #include<chrono>
 #include"MyFuncBot.h"
+#include"ParseJson.h"
+
 #pragma warning(disable: 4996)
 
 using namespace TgBot;
 
-
+using json = nlohmann::json;
 
 int main() {
-    setlocale(LC_ALL, "ru");
+   
     CURL* curl;
     std::string readBuffer;
+    std::string Valute;
     InfoOut io;
-
+    
     //std::time_t t = std::time(0);
     //std::tm* now = localtime(&t);
-       
-      TgBot::Bot bot("token");
-     
-      bot.getApi().deleteWebhook();
+
+    TgBot::Bot bot("token");
+
+    bot.getApi().deleteWebhook();
 
 
-      bot.getEvents().onCommand("start", [&bot](Message::Ptr message) {
-          bot.getApi().sendMessage(message->chat->id, "Hi!");
-          });
-
-
-
-
-      //for (int i = 0; i < 60; i++) {
-      //    std::time_t t = std::time(0);   // get time now
-      //    std::tm* now = localtime(&t);
-      //    // std::this_thread::sleep_for(std::chrono::seconds(1));
-      //    if (i == now->tm_sec) {
-      //        std::cout << "\ncool: " << i << "-i  sec: " << now->tm_sec << std::endl;
-      //    }
-      //    else {
-      //        std::cout << "\nnot cool: " << i << "-i  sec: " << now->tm_sec << std::endl;
-      //    }
-      
+    bot.getEvents().onCommand("start", [&bot](Message::Ptr message) {
+        bot.getApi().sendMessage(message->chat->id, "Hi!");
+        });
 
 
 
-      bot.getEvents().onCommand("star", [&bot, &io, &curl, &readBuffer](TgBot::Message::Ptr message) {
+      bot.getEvents().onCommand("launch", [&bot, &io, &curl, &readBuffer,&Valute](TgBot::Message::Ptr message) {
           while (1) {
               std::time_t t = std::time(0);
               std::tm* now = localtime(&t);
               //запускаю бесконечный цикл, который считывает время и с помощью ифов выполняет разные отправки сообщений
 
-              if (now->tm_hour == 13 && now->tm_min == 00 && now->tm_sec == 39) { // каждый день в 13 часов 39 секунд приходит прогноз погоды на данный момент
+              if (now->tm_hour == 21&& now->tm_min == 45 && now->tm_sec == 0) { // каждый день в 13 часов 39 секунд приходит прогноз погоды на данный момент
 
                   WeatherBuff(readBuffer, curl);
+
                   InfoOut io(readBuffer, readBuffer.length());
-                  bot.getApi().sendMessage(message->chat->id,
-                      "Weather: " + io.mainweather() + "\nTempNow: " + std::to_string(io.tempnow()) +
-                      "\nfeels_like: " + std::to_string(io.fells_like()) + "\nWind: " + std::to_string(io.wind()) +
-                      "\nTempMax: " + std::to_string(io.tempmax()) + "\nPressure: " + std::to_string(io.pressure()));
-                  std::this_thread::sleep_for(std::chrono::minutes(1));
+
+                  FinanceTodayBuff(Valute, curl);
+
+                  ParseJson Val(Valute);
+
+                 
+                  
+                  bot.getApi().sendMessage(message->chat->id,u8"Погода сейчас:\n\nТемпература:  " + std::to_string(io.tempnow()) + " 'C" +
+                      u8"\n\nВалюта:"+"\nEUR: " +
+                      std::to_string(Val.ValueEUR()) +
+                      "\nUSD: " + std::to_string(Val.ValueUSD()));
               }
 
-              else if (now->tm_hour == 7 && now->tm_min == 00 && now->tm_sec == 39) {//Утренний прогноз
+              else if (now->tm_hour ==21 && now->tm_min == 45 && now->tm_sec == 10) {//Утренний прогноз
                   WeatherFutureTodayBuff(readBuffer, curl);
-                  InfoOut io(readBuffer, readBuffer.length());
-                  bot.getApi().sendMessage(message->chat->id,
-                      "Weather: " + io.mainweather() + "\nTempNow: " + std::to_string(io.tempnow()) +
-                      "\nfeels_like: " + std::to_string(io.fells_like()) + "\nWind: " + std::to_string(io.wind()) +
-                      "\nTempMax: " + std::to_string(io.tempmax()) + "\nPressure: " + std::to_string(io.pressure()));
-                  std::this_thread::sleep_for(std::chrono::minutes(1));
+                  ParseJson pj(readBuffer);
+                  FinanceTodayBuff(Valute, curl);
+                  ParseJson Val(Valute);
+                  bot.getApi().sendMessage(message->chat->id, u8"Погода на сегодня:\n\nТемпература:\n Макс: " + std::to_string(pj.tempmaxday()) + " 'C"
+                      u8"\n Мин: " + std::to_string(pj.tempminday()) +" 'C" + u8"\n\nВалюта:"+"\nEUR: " + std::to_string(Val.ValueEUR()) +
+                      "\nUSD: " + std::to_string(Val.ValueUSD()));
+                  
               }
 
-              else if (now->tm_hour == 22 && now->tm_min == 00 && now->tm_sec == 39) {//Прогноз на завтра
+              else if (now->tm_hour == 21 && now->tm_min == 45 && now->tm_sec == 20) {//Прогноз на завтра
                   WeatherFutureTomorrowBuff(readBuffer, curl);
-                  InfoOut io(readBuffer, readBuffer.length());
-                  bot.getApi().sendMessage(message->chat->id,
-                      "Weather: " + io.mainweather() + "\nTempNow: " + std::to_string(io.tempnow()) +
-                      "\nfeels_like: " + std::to_string(io.fells_like()) + "\nWind: " + std::to_string(io.wind()) +
-                      "\nTempMax: " + std::to_string(io.tempmax()) + "\nPressure: " + std::to_string(io.pressure()));
-                  std::this_thread::sleep_for(std::chrono::minutes(1));
+                  ParseJson pj(readBuffer);
+                  FinanceTodayBuff(Valute, curl);
+                  ParseJson Val(Valute);
+                  bot.getApi().sendMessage(message->chat->id, u8"Погода на завтра:\n\nТемпература:\n Макс: " + std::to_string(pj.tempmaxday()) + " 'C"
+                      u8"\nМин: " + std::to_string(pj.tempminday()) + " 'C"+ u8"\n\nВалюта:" +"\n\nEUR: " + std::to_string(Val.ValueEUR()) +
+                      "\nUSD: " + std::to_string(Val.ValueUSD()));
+                  
               }
           }
           });

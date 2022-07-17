@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="InfoOut.cpp" />
     <ClCompile Include="MyFuncBot.cpp" />
+    <ClCompile Include="ParseJson.cpp" />
     <ClCompile Include="TgBotC++.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="InfoOut.h" />
     <ClInclude Include="MyFuncBot.h" />
+    <ClInclude Include="ParseJson.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
